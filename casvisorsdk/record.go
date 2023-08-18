@@ -16,6 +16,7 @@ package casvisorsdk
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 )
 
@@ -39,27 +40,6 @@ type Record struct {
 	IsTriggered bool `json:"isTriggered"`
 }
 
-func (c *Client) AddRecord(record *Record) (bool, error) {
-	if record.Owner == "" {
-		record.Owner = c.OrganizationName
-	}
-	if record.Organization == "" {
-		record.Organization = c.OrganizationName
-	}
-
-	postBytes, err := json.Marshal(record)
-	if err != nil {
-		return false, err
-	}
-
-	resp, err := c.DoPost("add-record", nil, postBytes, false, false)
-	if err != nil {
-		return false, err
-	}
-
-	return resp.Data == "Affected", nil
-}
-
 func (c *Client) GetRecords() ([]*Record, error) {
 	queryMap := map[string]string{
 		"owner": c.OrganizationName,
@@ -78,6 +58,26 @@ func (c *Client) GetRecords() ([]*Record, error) {
 		return nil, err
 	}
 	return records, nil
+}
+
+func (c *Client) GetRecord(name string) (*Record, error) {
+	queryMap := map[string]string{
+		"id": fmt.Sprintf("%s/%s", c.OrganizationName, name),
+	}
+
+	url := c.GetUrl("get-record", queryMap)
+
+	bytes, err := c.DoGetBytes(url)
+	if err != nil {
+		return nil, err
+	}
+
+	var record *Record
+	err = json.Unmarshal(bytes, &record)
+	if err != nil {
+		return nil, err
+	}
+	return record, nil
 }
 
 func (c *Client) GetPaginationRecords(p int, pageSize int, queryMap map[string]string) ([]*Record, int, error) {
@@ -108,6 +108,20 @@ func (c *Client) GetPaginationRecords(p int, pageSize int, queryMap map[string]s
 func (c *Client) UpdateRecord(record *Record) (bool, error) {
 	_, affected, err := c.modifyRecord("update-record", record, nil)
 	return affected, err
+}
+
+func (c *Client) AddRecord(record *Record) (bool, error) {
+	if record.Owner == "" {
+		record.Owner = c.OrganizationName
+	}
+	if record.Organization == "" {
+		record.Organization = c.OrganizationName
+	}
+
+	_, affected, err := c.modifyRecord("add-record", record, nil)
+
+	return affected, err
+
 }
 
 func (c *Client) DeleteRecord(record *Record) (bool, error) {

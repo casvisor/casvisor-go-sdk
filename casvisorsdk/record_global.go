@@ -14,12 +14,12 @@
 
 package casvisorsdk
 
-func AddRecord(record *Record) (bool, error) {
-	return globalClient.AddRecord(record)
-}
-
 func GetRecords() ([]*Record, error) {
 	return globalClient.GetRecords()
+}
+
+func GetRecord(name string) (*Record, error) {
+	return globalClient.GetRecord(name)
 }
 
 func GetPaginationRecords(p int, pageSize int, queryMap map[string]string) ([]*Record, int, error) {
@@ -28,6 +28,10 @@ func GetPaginationRecords(p int, pageSize int, queryMap map[string]string) ([]*R
 
 func UpdateRecord(record *Record) (bool, error) {
 	return globalClient.UpdateRecord(record)
+}
+
+func AddRecord(record *Record) (bool, error) {
+	return globalClient.AddRecord(record)
 }
 
 func DeleteRecord(record *Record) (bool, error) {

@@ -14,7 +14,7 @@
 
 package casvisorsdk
 
-type AuthConfig struct {
+type Config struct {
 	Endpoint         string
 	ClientId         string
 	ClientSecret     string
@@ -23,7 +23,7 @@ type AuthConfig struct {
 }
 
 type Client struct {
-	AuthConfig
+	Config
 }
 
 var globalClient *Client
@@ -34,7 +34,7 @@ func InitConfig(endpoint string, clientId string, clientSecret string, organizat
 
 func NewClient(endpoint string, clientId string, clientSecret string, organizationName string, applicationName string) *Client {
 	return NewClientWithConf(
-		&AuthConfig{
+		&Config{
 			Endpoint:         endpoint,
 			ClientId:         clientId,
 			ClientSecret:     clientSecret,
@@ -43,8 +43,12 @@ func NewClient(endpoint string, clientId string, clientSecret string, organizati
 		})
 }
 
-func NewClientWithConf(config *AuthConfig) *Client {
+func NewClientWithConf(config *Config) *Client {
 	return &Client{
 		*config,
 	}
+}
+
+func GetClient() *Client {
+	return globalClient
 }

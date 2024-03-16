@@ -35,6 +35,8 @@ type Record struct {
 	RequestUri   string `xorm:"varchar(1000)" json:"requestUri"`
 	Action       string `xorm:"varchar(1000)" json:"action"`
 	Language     string `xorm:"varchar(100)" json:"language"`
+	Body         string `xorm:"mediumtext" json:"body"`
+	Response     string `xorm:"mediumtext" json:"response"`
 
 	Object string `xorm:"-" json:"object"`
 	// ExtendedUser *User  `xorm:"-" json:"extendedUser"`

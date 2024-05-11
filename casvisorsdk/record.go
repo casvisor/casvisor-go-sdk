@@ -38,6 +38,7 @@ type Record struct {
 
 	Object   string `xorm:"mediumtext" json:"object"`
 	Response string `xorm:"mediumtext" json:"response"`
+	StatusCode int `json:"statusCode"`
 
 	// ExtendedUser *User  `xorm:"-" json:"extendedUser"`
 

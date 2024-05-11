@@ -38,6 +38,7 @@ type Record struct {
 
 	Object   string `xorm:"mediumtext" json:"object"`
 	Response string `xorm:"mediumtext" json:"response"`
+	Webhook []string `xorm:"mediumtext" json:"webhook"`
 
 	// ExtendedUser *User  `xorm:"-" json:"extendedUser"`
 

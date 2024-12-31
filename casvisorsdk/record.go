@@ -36,13 +36,14 @@ type Record struct {
 	Action       string `xorm:"varchar(1000)" json:"action"`
 	Language     string `xorm:"varchar(100)" json:"language"`
 
-	Object     string `xorm:"mediumtext" json:"object"`
-	Response   string `xorm:"mediumtext" json:"response"`
-	StatusCode int    `json:"statusCode"`
+	Object   string `xorm:"mediumtext" json:"object"`
+	Response string `xorm:"mediumtext" json:"response"`
 
 	// ExtendedUser *User  `xorm:"-" json:"extendedUser"`
 
-	IsTriggered bool `json:"isTriggered"`
+	Provider    string `xorm:"varchar(100)" json:"provider"`
+	Block       string `xorm:"varchar(100)" json:"block"`
+	IsTriggered bool   `json:"isTriggered"`
 }
 
 func (c *Client) GetRecords() ([]*Record, error) {
